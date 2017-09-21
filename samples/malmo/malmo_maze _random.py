@@ -32,7 +32,7 @@ except ImportError:
 
 
 MALMO_MAZE_FOLDER = 'results/baselines/malmo/maze/dqn/cntk'
-EMPTY_FRAME = np.zeros((300, 300), dtype=np.float32)
+EMPTY_FRAME = np.zeros((84, 84), dtype=np.float32)
 
 
 class MazeEnvironment(MalmoEnvironment):

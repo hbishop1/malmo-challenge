@@ -326,6 +326,7 @@ class MalmoEnvironment(VideoCapableEnvironment):
         :return:
         """
         # Wait until we have everything we need
+        sleep(0.1)
         current_state = self._agent.peekWorldState()
         while not self.is_valid(current_state) or not self._ready_to_act(current_state):
 

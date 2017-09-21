@@ -18,11 +18,14 @@
 from argparse import ArgumentParser
 from os import path
 from subprocess import Popen
-from malmopy.agent import RandomAgent
+from malmo_tabular_q import TabularQLearnerAgent
+from malmopy.environment.malmo.malmo import MalmoStateBuilder
 import sys
+import json
+from time import sleep
 import numpy as np
 from malmopy.environment.malmo import MalmoEnvironment, MalmoALEStateBuilder
-#from malmopy.agent import TemporalMemory, DQNAgent, LinearEpsilonGreedyExplorer
+
 try:
     from malmopy.visualization.tensorboard import TensorboardVisualizer
     from malmopy.visualization.tensorboard.cntk import CntkConverter
@@ -30,14 +33,37 @@ except ImportError:
     print('Cannot import tensorboard, using ConsoleVisualizer.')
     from malmopy.visualization import ConsoleVisualizer
 
-#from malmopy.experiment import SingleAgentExperiment
-#from malmopy.model.cntk import DeepQNeuralNetwork
-#from malmopy.visualization.tensorboard import TensorboardVisualizer
-#from malmopy.visualization import ConsoleVisualizer
-#from malmopy.visualization.tensorboard.cntk import CntkConverter
 
 MALMO_MAZE_FOLDER = 'results/baselines/malmo/maze/dqn/cntk'
 EMPTY_FRAME = np.zeros((84, 84), dtype=np.float32)
+
+class MazeTabQStateBuilder(MalmoStateBuilder):
+    """
+    This class builds a state made up of the agent's location and orientation
+    """
+
+    def __init__(self):
+        pass
+
+    def build(self, environment):
+        """
+        """
+        assert isinstance(environment,
+                          MazeEnvironment), 'environment is not a MalmoMaze Environment instance'
+
+        world_obs = environment.world_observations
+        if world_obs is None:
+            return None
+
+        current_x = world_obs.get(u'XPos', 0)
+        current_z = world_obs.get(u'ZPos', 0)
+        yaw = world_obs.get(u'Yaw', 0)
+
+        location= str(current_x) + ":" + str(current_z)
+        orientation=yaw
+
+        return (location, orientation)
+
 
 
 class MazeEnvironment(MalmoEnvironment):
@@ -47,7 +73,7 @@ class MazeEnvironment(MalmoEnvironment):
         super(MazeEnvironment, self).__init__(mission, MazeEnvironment.MAZE_ACTIONS, remotes,
                                               recording_path=recording_path)
 
-        self._builder = MalmoALEStateBuilder()
+        self._builder = MazeTabQStateBuilder()
 
     @property
     def state(self):
@@ -63,8 +89,8 @@ def on_episode_end(experiment, nb_actions_taken, rewards):
 
 def visualize_training(visualizer, step, rewards, tag='Training'):
     visualizer.add_entry(step, '%s/reward per episode' % tag, sum(rewards))
-    visualizer.add_entry(step, '%s/max.reward' % tag, max(rewards))
-    visualizer.add_entry(step, '%s/min.reward' % tag, min(rewards))
+#    visualizer.add_entry(step, '%s/max.reward' % tag, max(rewards))
+ #   visualizer.add_entry(step, '%s/min.reward' % tag, min(rewards))
     visualizer.add_entry(step, '%s/actions per episode' % tag, len(rewards)-1)
 
 
@@ -76,24 +102,13 @@ def run_maze_learner(mission, clients):
 
     else:
         visualizer = ConsoleVisualizer()
-#    with TensorboardVisualizer() as visualizer:
+
     env = MazeEnvironment(mission, [str.split(client, ':') for client in clients])
     env.recording = False
 
-#    explorer = LinearEpsilonGreedyExplorer(1, 0.1, 10000)
-#        model = DeepQNeuralNetwork((4, 84, 84), (env.available_actions,), momentum=0, visualizer=visualizer)
-#        memory = TemporalMemory(50000, model.input_shape[1:], model.input_shape[0], False)
+    agent = TabularQLearnerAgent("rand",3)
 
-    agent = RandomAgent("rand",3)  #DQNAgent("Maze DQN Agent", env.available_actions, model, memory, explorer=explorer,
-                         #visualizer=visualizer)
-
-#        exp = SingleAgentExperiment("Malmo Cliff Walking", agent, env, 500000, warm_up_timesteps=500,
-#                                    visualizer=visualizer)
-#        exp.episode_end += on_episode_end
-
-#        visualizer.initialize(MALMO_MAZE_FOLDER, model, CntkConverter())
-
- #   with Popen(['tensorboard', '--logdir=%s' % path.join(MALMO_MAZE_FOLDER, path.pardir), '--port=6006']):
+            #taking random actions
     EPOCH_SIZE = 250000
     max_training_steps = 50 * EPOCH_SIZE
     state = env.reset()
@@ -102,7 +117,6 @@ def run_maze_learner(mission, clients):
     viz_rewards = []
     for step in range(1, max_training_steps + 1):
 
-#        action = agent.act(state, reward, agent_done, is_training=True)
                 # check if env needs reset
         if env.done:
             visualize_training(visualizer, step, viz_rewards)
@@ -111,11 +125,16 @@ def run_maze_learner(mission, clients):
             state = env.reset()
 
                 # select an action
-        action = agent.act(state, reward, agent_done, is_training=True)
-        print('ACTION BEING TAKEN: ', action)
+        action = agent.act(step, state, is_training=True)
+        if type(action) == int:
+            print('ACTION BEING TAKEN: ', action)
+        else:
+            print('ACTION BEING TAKEN: ', np.asscalar(action))
 
                 # take a step
+        old = state
         state, reward, agent_done = env.do(action)
+        agent.observe(old, action, state, reward, env.done)
         viz_rewards.append(reward)
 
         if (step % EPOCH_SIZE) == 0:

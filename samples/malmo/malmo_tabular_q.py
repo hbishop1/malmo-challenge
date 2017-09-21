@@ -17,16 +17,17 @@
 
 from argparse import ArgumentParser
 from os import path
+from time import sleep
 
 import numpy as np
 
 from malmopy.agent import BaseAgent
-from malmopy.environment.malmo import DiscreteMalmoEnvironment
+from malmopy.environment.malmo import MalmoEnvironment
 
 
 def state_id(state):
     assert len(state) == 2, 'state has wrong shape'
-    return '%d:%d' % (int(state[0]), int(state[1]))
+    return '%s:%d' % ((state[0]), int(state[1]))
 
 
 class TabularQLearnerAgent(BaseAgent):
@@ -34,7 +35,7 @@ class TabularQLearnerAgent(BaseAgent):
     Tabular Q-learning agent for discrete state/action spaces.
     """
 
-    def __init__(self, name, nb_actions, epsilon=0.1, alpha=0.1, gamma=1.0):
+    def __init__(self, name, nb_actions, epsilon=0.1, alpha=0.5, gamma=1.0):
         super(TabularQLearnerAgent, self).__init__(name, nb_actions)
 
         self.epsilon = epsilon
@@ -47,7 +48,7 @@ class TabularQLearnerAgent(BaseAgent):
         """
         Take 1 action in response to the current world state
         """
-
+#        sleep(1)
         current_s = state_id(state)
         self._ensure_state_exists(current_s)
 
@@ -56,6 +57,7 @@ class TabularQLearnerAgent(BaseAgent):
             a = np.random.randint(0, self.nb_actions - 1)
         else:
             m = max(self._q_table[current_s])
+            print('q values: ', self._q_table[current_s])
             indexes = np.where(self._q_table[current_s] == m)[0]
             a = np.random.choice(indexes, 1).squeeze()
 
@@ -81,7 +83,7 @@ class TabularQLearnerAgent(BaseAgent):
             self._q_table[state] = np.zeros(self.nb_actions, dtype=np.float32)
 
 
-class CliffEnvironment(DiscreteMalmoEnvironment):
+class CliffEnvironment(MalmoEnvironment):
     ACTIONS_SET = ["movenorth 1", "movesouth 1", "movewest 1", "moveeast 1"]
 
     def __init__(self, mission, remotes):

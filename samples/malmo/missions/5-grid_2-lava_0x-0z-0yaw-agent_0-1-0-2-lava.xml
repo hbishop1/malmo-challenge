@@ -65,8 +65,8 @@
             </AgentQuitFromTouchingBlockType>
             <AgentQuitFromReachingCommandQuota total="80" description="command_quota_reached"/>
             <VideoProducer want_depth="false">
-                <Width>424</Width>
-                <Height>320</Height>
+                <Width>212</Width>
+                <Height>160</Height>
             </VideoProducer>
         </AgentHandlers>
     </AgentSection>

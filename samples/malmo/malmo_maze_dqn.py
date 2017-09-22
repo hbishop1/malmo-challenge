@@ -21,6 +21,7 @@ from subprocess import Popen
 from datetime import datetime
 from malmo_tabular_q import TabularQLearnerAgent
 from malmopy.environment.malmo.malmo import MalmoStateBuilder
+from malmopy.agent import QLearnerAgent, TemporalMemory
 import sys
 import json
 from time import sleep

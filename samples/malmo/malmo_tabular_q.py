@@ -29,8 +29,6 @@ def state_id(state):
     assert len(state) == 2, 'state has wrong shape'
     return '%s:%d' % ((state[0]), int(state[1]))
 
-ROOT_FOLDER = 'results/baselines/%s/dqn/%s-%s'
-
 class TabularQLearnerAgent(BaseAgent):
     """
     Tabular Q-learning agent for discrete state/action spaces.

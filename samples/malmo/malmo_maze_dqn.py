@@ -114,10 +114,10 @@ def run_experiment(backend, device_id, max_epoch, record, clients, logdir,
 
                 # select an action
             action = agent.act(state, reward, agent_done, is_training=True)
-        if type(action) == int:
-            print('ACTION BEING TAKEN: ', action)
-        else:
-            print('ACTION BEING TAKEN: ', np.asscalar(action))
+#        if type(action) == int:
+#            print('ACTION BEING TAKEN: ', action)
+#        else:
+#            print('ACTION BEING TAKEN: ', np.asscalar(action))
 
                 # take a step
         state, reward, agent_done = env.do(action)

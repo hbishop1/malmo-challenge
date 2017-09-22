@@ -190,7 +190,7 @@ class QLearnerAgent(BaseAgent):
         self._reward_clipping = reward_clipping
 
         # Explorer related
-        explorer = explorer or LinearEpsilonGreedyExplorer(1, 0.1, 1e6)
+        explorer = explorer or LinearEpsilonGreedyExplorer(1, 0.1, 1e4)
         assert isinstance(explorer, BaseExplorer), \
             'explorer should inherit from BaseExplorer'
 

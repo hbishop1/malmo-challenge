@@ -18,7 +18,7 @@
     </About>
     <ModSettings>
         <MsPerTick>2</MsPerTick>
-        <PrioritiseOffscreenRendering>true</PrioritiseOffscreenRendering>
+        <PrioritiseOffscreenRendering>false</PrioritiseOffscreenRendering>
     </ModSettings>
     <ServerSection>
         <ServerInitialConditions>
@@ -41,6 +41,7 @@
                 <DrawCuboid type="beacon" x1="4" x2="4" y1="4" y2="5" z1="4" z2="4"/>
                 <DrawBlock type="lava" x="0" y="3" z="1"/>
                 <DrawBlock type="lava" x="0" y="3" z="2"/>
+                <DrawEntity type="Zombie" x="3" y="4" z="4"/>
             </DrawingDecorator>
             <ServerQuitFromTimeUp timeLimitMs="100000000" description="out_of_time"/>
             <ServerQuitWhenAnyAgentFinishes/>
@@ -65,8 +66,8 @@
             </AgentQuitFromTouchingBlockType>
             <AgentQuitFromReachingCommandQuota total="80" description="command_quota_reached"/>
             <VideoProducer want_depth="false">
-                <Width>212</Width>
-                <Height>160</Height>
+                <Width>1000</Width>
+                <Height>500</Height>
             </VideoProducer>
         </AgentHandlers>
     </AgentSection>

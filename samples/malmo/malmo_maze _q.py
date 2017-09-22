@@ -35,6 +35,7 @@ except ImportError:
 
 
 MALMO_MAZE_FOLDER = 'results/baselines/malmo/maze/dqn/cntk'
+ROOT_FOLDER = 'results/baselines/%s/dqn/%s-%s'
 EMPTY_FRAME = np.zeros((84, 84), dtype=np.float32)
 
 class MazeTabQStateBuilder(MalmoStateBuilder):

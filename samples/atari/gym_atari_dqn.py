@@ -107,7 +107,7 @@ if __name__ == '__main__':
                             help='Number of epochs. One epoch is 250k actions.')
     arg_parser.add_argument('-p', '--port', type=int, default=6006,
                             help='Port for running tensorboard.')
-    arg_parser.add_argument('env', type=str, metavar='environment',
+        arg_parser.add_argument('env', type=str, metavar='environment',
                             nargs='?', default='Breakout-v3',
                             help='Gym environment to run')
 

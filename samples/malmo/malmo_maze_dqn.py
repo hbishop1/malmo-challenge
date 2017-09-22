@@ -137,6 +137,9 @@ if __name__ == '__main__':
     arg_parser.add_argument('clients', nargs='+', help='Minecraft clients endpoints (ip(:port)?)+')
     arg_parser.add_argument('-p', '--port', type=int, default=6006,
                             help='Port for running tensorboard.')
+    arg_parser.add_argument('env', type=str, metavar='environment',
+                            nargs='?', default='Breakout-v3',
+                            help='Gym environment to run')
     args = arg_parser.parse_args()
 
     mission_dir = path.abspath(args.directory)
@@ -153,6 +156,6 @@ if __name__ == '__main__':
     # Load mission an register agent
     with open(path.join(mission_dir, MISSION), 'r') as f:
         mission = f.read()
-        run_experiment(args.env, args.backend, int(args.device), args.epochs,
+        run_experiment(args.backend, int(args.device), args.epochs,
                    args.record, logdir, visualizer)
 

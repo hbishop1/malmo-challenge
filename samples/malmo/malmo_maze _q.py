@@ -153,6 +153,15 @@ if __name__ == '__main__':
 
     mission_dir = path.abspath(args.directory)
 
+    logdir = ROOT_FOLDER % (args.env, args.backend, datetime.utcnow().isoformat())
+    if TENSORBOARD_AVAILABLE:
+        visualizer = TensorboardVisualizer()
+        visualizer.initialize(logdir, None)
+        print('Starting tensorboard ...')
+        p = Popen(['tensorboard', '--logdir=results', '--port=%d' % args.port])
+
+    else:
+        visualizer = ConsoleVisualizer()
     # Load mission an register agent
     with open(path.join(mission_dir, MISSION), 'r') as f:
         mission = f.read()

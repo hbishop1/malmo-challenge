@@ -113,7 +113,7 @@ def run_experiment(backend, device_id, max_epoch, record, clients, logdir,
             state = env.reset()
 
                 # select an action
-        action = agent.act(step, state, is_training=True)
+            action = agent.act(state, reward, agent_done, is_training=True)
         if type(action) == int:
             print('ACTION BEING TAKEN: ', action)
         else:
@@ -121,7 +121,6 @@ def run_experiment(backend, device_id, max_epoch, record, clients, logdir,
 
                 # take a step
         state, reward, agent_done = env.do(action)
-        agent.observe(old, action, state, reward, env.done)
         viz_rewards.append(reward)
 
         if (step % EPOCH_SIZE) == 0:

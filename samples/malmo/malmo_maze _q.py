@@ -35,7 +35,7 @@ except ImportError:
 
 
 MALMO_MAZE_FOLDER = 'results/baselines/malmo/maze/dqn/cntk'
-ROOT_FOLDER = 'results/baselines/%s/dqn/%s-%s'
+ROOT_FOLDER = 'results/baselines/tab_q/%s-%s'
 EMPTY_FRAME = np.zeros((84, 84), dtype=np.float32)
 
 class MazeTabQStateBuilder(MalmoStateBuilder):
@@ -154,7 +154,7 @@ if __name__ == '__main__':
 
     mission_dir = path.abspath(args.directory)
 
-    logdir = ROOT_FOLDER % (args.env, args.backend, datetime.utcnow().isoformat())
+    logdir = ROOT_FOLDER % (args.backend, datetime.utcnow().isoformat())
     if TENSORBOARD_AVAILABLE:
         visualizer = TensorboardVisualizer()
         visualizer.initialize(logdir, None)

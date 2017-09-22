@@ -30,10 +30,13 @@ from malmopy.environment.malmo import MalmoEnvironment, MalmoALEStateBuilder
 try:
     from malmopy.visualization.tensorboard import TensorboardVisualizer
     from malmopy.visualization.tensorboard.cntk import CntkConverter
+
+    TENSORBOARD_AVAILABLE = True
 except ImportError:
     print('Cannot import tensorboard, using ConsoleVisualizer.')
     from malmopy.visualization import ConsoleVisualizer
 
+    TENSORBOARD_AVAILABLE = False
 
 MALMO_MAZE_FOLDER = 'results/baselines/malmo/maze/dqn/cntk'
 ROOT_FOLDER = 'results/baselines/tab_q/%s'

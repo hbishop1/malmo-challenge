@@ -154,6 +154,8 @@ if __name__ == '__main__':
     arg_parser = ArgumentParser()
     arg_parser.add_argument('-d', '--directory', type=str, help='Missions directory', default='missions')
     arg_parser.add_argument('clients', nargs='+', help='Minecraft clients endpoints (ip(:port)?)+')
+    arg_parser.add_argument('-p', '--port', type=int, default=6006,
+                            help='Port for running tensorboard.')
     args = arg_parser.parse_args()
 
     mission_dir = path.abspath(args.directory)

@@ -140,6 +140,12 @@ if __name__ == '__main__':
     arg_parser.add_argument('-b', '--backend', type=str, default='cntk',
                             choices=['cntk', 'chainer'],
                             help='Neural network backend to use.')
+    arg_parser.add_argument('-d', '--device', type=int, default=-1,
+                            help='GPU device on which to run the experiment.')
+    arg_parser.add_argument('-r', '--record', action='store_true',
+                            help='Setting this will record runs')
+    arg_parser.add_argument('-e', '--epochs', type=int, default=50,
+                            help='Number of epochs. One epoch is 250k actions.')
     args = arg_parser.parse_args()
 
     mission_dir = path.abspath(args.directory)

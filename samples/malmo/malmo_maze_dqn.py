@@ -72,7 +72,7 @@ def visualize_training(visualizer, step, rewards, tag='Training'):
     visualizer.add_entry(step, '%s/actions per episode' % tag, len(rewards)-1)
 
 
-def run_experiment(environment, backend, device_id, max_epoch, record, logdir,
+def run_experiment(backend, device_id, max_epoch, record, logdir,
                    visualizer):
 
     env = MazeEnvironment(mission, [str.split(client, ':') for client in clients])

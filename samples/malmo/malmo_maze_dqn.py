@@ -163,5 +163,5 @@ if __name__ == '__main__':
     with open(path.join(mission_dir, MISSION), 'r') as f:
         mission = f.read()
         run_experiment(args.backend, int(args.device), args.epochs,
-                   args.record, args.clients logdir, visualizer)
+                   args.record, args.clients, logdir, visualizer)
 

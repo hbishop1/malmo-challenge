@@ -137,9 +137,9 @@ if __name__ == '__main__':
     arg_parser.add_argument('clients', nargs='+', help='Minecraft clients endpoints (ip(:port)?)+')
     arg_parser.add_argument('-p', '--port', type=int, default=6006,
                             help='Port for running tensorboard.')
-    arg_parser.add_argument('env', type=str, metavar='environment',
-                            nargs='?', default='Breakout-v3',
-                            help='Gym environment to run')
+    arg_parser.add_argument('-b', '--backend', type=str, default='cntk',
+                            choices=['cntk', 'chainer'],
+                            help='Neural network backend to use.')
     args = arg_parser.parse_args()
 
     mission_dir = path.abspath(args.directory)

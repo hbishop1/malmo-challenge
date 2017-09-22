@@ -18,6 +18,7 @@
 from argparse import ArgumentParser
 from os import path
 from subprocess import Popen
+from datetime import datetime
 from malmo_tabular_q import TabularQLearnerAgent
 from malmopy.environment.malmo.malmo import MalmoStateBuilder
 import sys

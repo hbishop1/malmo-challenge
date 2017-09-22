@@ -41,7 +41,6 @@
                 <DrawCuboid type="beacon" x1="4" x2="4" y1="4" y2="5" z1="4" z2="4"/>
                 <DrawBlock type="lava" x="0" y="3" z="1"/>
                 <DrawBlock type="lava" x="0" y="3" z="2"/>
-                <DrawEntity type="Zombie" x="3" y="4" z="4"/>
             </DrawingDecorator>
             <ServerQuitFromTimeUp timeLimitMs="100000000" description="out_of_time"/>
             <ServerQuitWhenAnyAgentFinishes/>

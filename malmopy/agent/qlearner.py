@@ -154,7 +154,7 @@ Tracker = namedtuple('Tracker', ['state', 'action'])
 
 class QLearnerAgent(BaseAgent):
     def __init__(self, name, nb_actions, model, memory, gamma=.99,
-                 minibatch_size=32, train_after=50000, train_frequency=4,
+                 minibatch_size=32, train_after=10000, train_frequency=4,
                  explorer=None, reward_clipping=None, visualizer=None):
 
         assert isinstance(model, QModel), 'model should inherit from QModel'
@@ -190,7 +190,7 @@ class QLearnerAgent(BaseAgent):
         self._reward_clipping = reward_clipping
 
         # Explorer related
-        explorer = explorer or LinearEpsilonGreedyExplorer(1, 0.1, 1e4)
+        explorer = explorer or LinearEpsilonGreedyExplorer(1, 0.1, 5e4)
         assert isinstance(explorer, BaseExplorer), \
             'explorer should inherit from BaseExplorer'
 
